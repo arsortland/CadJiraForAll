@@ -29,12 +29,16 @@ namespace CadJiraForAll
 
         private void button1_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("REDM VALGT");
+            CadJira.redm_or_gcs = "redm";
+            //MessageBox.Show(CadJira.redm_or_gcs);
+            this.Close();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("GCS&ET VALGT");
+            CadJira.redm_or_gcs = "gcs";
+            //MessageBox.Show(CadJira.redm_or_gcs);
+            this.Close();
         }
     }
 }
