@@ -40,5 +40,10 @@ namespace CadJiraForAll
             //MessageBox.Show(CadJira.redm_or_gcs);
             this.Close();
         }
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
     }
 }

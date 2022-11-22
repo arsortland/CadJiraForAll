@@ -1,14 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.DirectoryServices;
-using System.Linq;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Windows.Forms;
-using Newtonsoft.Json;
 using RestSharp;
 using RestSharp.Authenticators;
 
@@ -30,12 +21,13 @@ namespace CadJiraForAll
 
         public void Formchoice()
         {
-            FormChoice formet =  new FormChoice();
+            FormChoice formet = new FormChoice();
             formet.ShowDialog(); //synkront vs Show()
         }
 
         public static async Task API_Request(string choice_made)
         {
+
             string url="";
             string json="";
             if (choice_made == "redm")
@@ -55,16 +47,16 @@ namespace CadJiraForAll
             client.Authenticator = new HttpBasicAuthenticator("risinggaardsortla", "91323212Zenith");
 
             var restResponse = await client.ExecutePostAsync(request);
-            MessageBox.Show("ETTER RESTRESPONSE"); //FJERNES//FJERNES - DENNE KJØRER IKKE! SE LINJE 61!
+            //MessageBox.Show("ETTER RESTRESPONSE"); //FJERNES//FJERNES - DENNE KJØRER IKKE! SE LINJE 61!
 
             if (restResponse.IsSuccessful)
             {
                 MessageBox.Show("Ticket created");
                 //Console.WriteLine(JsonConvert.DeserializeObject(restResponse.Content)); //DENNE MÅ VEKK PÅ ET TIDSPUNKT -  FINNE URL FRA DENNE.
             }
-            MessageBox.Show(restResponse.Content.ToString() );  ///HVA BLIR FAKTISK SENDT.
-            MessageBox.Show(restResponse.StatusCode.ToString());
-            MessageBox.Show(restResponse.ErrorException.ToString());
+            //MessageBox.Show(restResponse.Content.ToString() );  ///HVA BLIR FAKTISK SENDT.
+            //MessageBox.Show(restResponse.StatusCode.ToString());
+            //MessageBox.Show(restResponse.ErrorException.ToString());
 
         }
 
@@ -139,9 +131,10 @@ namespace CadJiraForAll
     {
         public async Task NewMain() //Denne kjører i CAD og tar seg av selve kjøringen.
         {
+            MessageBox.Show("HELLO FROM THE OTHER SIDE AGAIN");
             CadJira felleskode = new CadJira();
-
             felleskode.Formchoice();
+            
             await CadJira.API_Request(CadJira.redm_or_gcs);
 
             //MessageBox.Show(CadJira.redm_or_gcs);
@@ -151,3 +144,6 @@ namespace CadJiraForAll
         }
     }
 }
+
+
+//Lage en HTTP request, men RestSharp er bar een wrapper da? mmmmm
