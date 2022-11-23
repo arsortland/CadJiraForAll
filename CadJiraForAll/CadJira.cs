@@ -1,5 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using RestSharp;
 using RestSharp.Authenticators;
 
@@ -19,7 +24,7 @@ namespace CadJiraForAll
         //}
 
 
-        public void Formchoice()
+        public static void Formchoice()
         {
             FormChoice formet = new FormChoice();
             formet.ShowDialog(); //synkront vs Show()
@@ -93,26 +98,13 @@ namespace CadJiraForAll
                 "\"customfield_10040\": {\"value\": \"Norway\"}," +
                 "\"customfield_13564\": [{\"value\": \"Other\"}]," +
                 "\"customfield_12699\": {\"value\": \"Rig Systems\"}," +
-                "\"customfield_14114\": {\"value\": \"Norway\"}," +
+                //"\"customfield_14114\": {\"value\": \"Norway\"}," +
                 "\"customfield_15509\": {\"value\": \"No, update does not need Global ID\"}," +
-                "\"customfield_14471\": {\"value\": \"Purchased\"}," +
+                //"\"customfield_14471\": {\"value\": \"Purchased\"}," +
                 "\"description\": \"This is a General description sent through JIRA API, Please Ignore this ticket.\"," +
                 "\"customfield_14361\": {\"value\": \"No, Do Not Enable\"}," +
                 "\"customfield_13664\": 1" +
                 "}" +
-                //"" +
-                //"" +
-                //"" +
-                //"" +
-                //"" +
-                //"" +
-                //"" +
-                //"" +
-                //"" +
-                //"" +
-                //"" +
-                //"" +
-                //"" +
                 //"" +
                 //"" +
                 //"" +
@@ -126,18 +118,56 @@ namespace CadJiraForAll
             string json = "{ \"serviceDeskId\": \"11\",\"requestTypeId\": \"1112\", \"requestFieldValues\": { \"customfield_11869\": {\"value\": \"Other\"}, \"description\": \"Greetings from CADJIRA API TEST\"  } }";
             return json;
         }
+
+        //static readonly HttpClient client = new HttpClient();
+
+        public static async Task NewTwoMain()
+        {
+            try
+            {
+                var client = new HttpClient();
+                HttpResponseMessage response = await client.GetAsync("https://jsonplaceholder.typicode.com/todos/66");
+                response.EnsureSuccessStatusCode();
+                
+                string responseBody = await response.Content.ReadAsStringAsync();
+
+                MessageBox.Show(responseBody);
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine("\nException Caught!");
+                Console.WriteLine("Message :{0} ", e.Message);
+            }
+        }
+        public static async Task RestTwoMain()
+        {
+            using (var client = new HttpClient { BaseAddress = new Uri("https://jira.nov.com/rest/") })
+            {
+                var authString = Convert.ToBase64String(Encoding.UTF8.GetBytes("risinggaardsortla:91323212Zenith"));
+
+                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", authString);
+                //POST//var response = await client.PostAsync(requestUri, new StringContent());
+                var response = await client.GetAsync("servicedeskapi/servicedesk/4822/requesttype/14610/field");
+
+                string responseBody = await response.Content.ReadAsStringAsync();
+                MessageBox.Show(responseBody);
+            }
+        }
     }
     public class RunAll
     {
         public async Task NewMain() //Denne kjører i CAD og tar seg av selve kjøringen.
         {
-            MessageBox.Show("HELLO FROM THE OTHER SIDE AGAIN");
-            CadJira felleskode = new CadJira();
-            felleskode.Formchoice();
-            
-            await CadJira.API_Request(CadJira.redm_or_gcs);
+            MessageBox.Show("HELLO FROM THE OTHER SIDE AGAIN 7");
+            //CadJira felleskode = new CadJira();
+            //felleskode.Formchoice();
 
+            //CadJira.Formchoice();
             //MessageBox.Show(CadJira.redm_or_gcs);
+
+            //await CadJira.API_Request(CadJira.redm_or_gcs);
+
+            await CadJira.RestTwoMain();
 
             //LAGE REQUEST I JIRADDIN??
             //HVORDAN FÅ KJØRT DENNE HER...?
