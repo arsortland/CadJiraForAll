@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
 using RestSharp.Authenticators;
+using static System.Net.WebRequestMethods;
 
 namespace CadJiraForAll
 {
@@ -30,37 +31,6 @@ namespace CadJiraForAll
         {
             FormChoice formet = new FormChoice();
             formet.ShowDialog(); //synkront vs Show()
-        }
-
-        public static async Task API_Request(string choice_made)
-        {
-
-            string url="";
-            string json="";
-            if (choice_made == "redm")
-            {
-                url = "https://jira.nov.com/rest/servicedeskapi/request";
-                json = RigEDMJson();
-            }
-            if (choice_made == "gcs")
-            {
-                url = "https://support.nov.com/rest/servicedeskapi/request";
-                json = GCSJson();
-            }
-            var client = new RestClient(url);
-            var request = new RestRequest();
-            request.AddStringBody(json, DataFormat.Json);
-
-            client.Authenticator = new HttpBasicAuthenticator("risinggaardsortla", "91323212Zenith");
-
-            var restResponse = await client.ExecutePostAsync(request);
-            //MessageBox.Show("ETTER RESTRESPONSE"); //FJERNES//FJERNES - DENNE KJØRER IKKE! SE LINJE 61!
-
-            if (restResponse.IsSuccessful)
-            {
-                MessageBox.Show("Ticket created");
-                //Console.WriteLine(JsonConvert.DeserializeObject(restResponse.Content)); //DENNE MÅ VEKK PÅ ET TIDSPUNKT -  FINNE URL FRA DENNE.
-            }
         }
 
 
@@ -100,25 +70,39 @@ namespace CadJiraForAll
 
         public static string GCSJson()
         {
-            string json = "{ \"serviceDeskId\": \"11\",\"requestTypeId\": \"1112\", \"requestFieldValues\": { \"customfield_11869\": {\"value\": \"Other\"}, \"description\": \"Greetings from CADJIRA API TEST\"  } }";
+            string json = "{ \"serviceDeskId\": \"11\",\"requestTypeId\": \"1112\", \"requestFieldValues\": { \"customfield_11869\": {\"value\": \"Other\"}, \"description\": \" Data Collected from: "+cadprogram.ToUpper()+"  ---  Listed weight(in Grams): "+weight+" \"  } }";
             return json;
         }
 
         //static readonly HttpClient client = new HttpClient();
 
 
-        public static async Task RestTwoMain()
+        public static async Task API_Request(string choice_made)
         {
-            using (var client = new HttpClient { BaseAddress = new Uri("https://jira.nov.com/rest/") })
+            string url = "";
+            string jsonstring = "";
+            if (choice_made == "redm")
+            {
+                url = "https://jira.nov.com/rest/";
+                jsonstring = RigEDMJson().ToString();
+            }
+            if (choice_made == "gcs")
+            {
+                url = "https://support.nov.com/rest/";
+                jsonstring = GCSJson().ToString(); 
+            }
+
+            using (var client = new HttpClient { BaseAddress = new Uri(url) })
             {
                 var authString = Convert.ToBase64String(Encoding.UTF8.GetBytes("risinggaardsortla:91323212Zenith"));
 
                 client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", authString);
-                var response = await client.PostAsync("servicedeskapi/request", new StringContent(RigEDMJson().ToString(), Encoding.UTF8, "application/json")); //LEGG TIL URI SOM I GET PLUSS JSON/STRINGEN DU VIL POSTE MED REQUESTEN. (https://jira.nov.com/rest/servicedeskapi/request + RigEDMJson() 
-                //var response = await client.GetAsync("servicedeskapi/servicedesk/4822/requesttype/14610/field");
+                var response = await client.PostAsync("servicedeskapi/request", new StringContent(jsonstring, Encoding.UTF8, "application/json")); //LEGG TIL URI SOM I GET PLUSS JSON/STRINGEN DU VIL POSTE MED REQUESTEN. (https://jira.nov.com/rest/servicedeskapi/request + RigEDMJson() 
+                //var response = await client.GetAsync("servicedeskapi/servicedesk/4822/requesttype/14610/field"); = GET metode
 
                 string responseBody = await response.Content.ReadAsStringAsync();
-                MessageBox.Show(responseBody);
+                //MessageBox.Show(responseBody);
+
                 //Parses out the URL for the ticket on web:
                 var jObject = JObject.Parse(responseBody);
                 string stringurlfromJson = (string)jObject["_links"]["web"];
@@ -134,12 +118,12 @@ namespace CadJiraForAll
             //CadJira felleskode = new CadJira();
             //felleskode.Formchoice();
 
-            //CadJira.Formchoice();
+            CadJira.Formchoice();
             //MessageBox.Show(CadJira.redm_or_gcs);
 
             //await CadJira.API_Request(CadJira.redm_or_gcs);
 
-            await CadJira.RestTwoMain();
+            await CadJira.API_Request(CadJira.redm_or_gcs);
             //MessageBox.Show(CadJira.partnummer);
             //MessageBox.Show(CadJira.cadprogram);
             //MessageBox.Show(CadJira.weight);
