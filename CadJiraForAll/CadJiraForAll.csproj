@@ -113,6 +113,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CadJira.cs" />
+    <Compile Include="DescUserInput.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DescUserInput.Designer.cs">
+      <DependentUpon>DescUserInput.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Login.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Login.Designer.cs">
+      <DependentUpon>Login.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormChoice.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -122,8 +134,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="DescUserInput.resx">
+      <DependentUpon>DescUserInput.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormChoice.resx">
       <DependentUpon>FormChoice.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Login.resx">
+      <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

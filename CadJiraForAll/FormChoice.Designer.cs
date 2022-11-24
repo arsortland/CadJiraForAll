@@ -36,9 +36,10 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(28, 68);
+            this.button1.Location = new System.Drawing.Point(37, 84);
+            this.button1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(111, 48);
+            this.button1.Size = new System.Drawing.Size(148, 59);
             this.button1.TabIndex = 0;
             this.button1.Text = "REDM";
             this.button1.UseVisualStyleBackColor = true;
@@ -46,9 +47,10 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(181, 68);
+            this.button2.Location = new System.Drawing.Point(287, 84);
+            this.button2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(111, 48);
+            this.button2.Size = new System.Drawing.Size(148, 59);
             this.button2.TabIndex = 1;
             this.button2.Text = "GCS&&ET";
             this.button2.UseVisualStyleBackColor = true;
@@ -58,9 +60,12 @@
             // 
             this.groupBox1.Controls.Add(this.button1);
             this.groupBox1.Controls.Add(this.button2);
-            this.groupBox1.Location = new System.Drawing.Point(12, 12);
+            this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox1.Location = new System.Drawing.Point(39, 13);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(350, 186);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox1.Size = new System.Drawing.Size(499, 244);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Choose queue:";
@@ -68,13 +73,14 @@
             // 
             // FormChoice
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.ClientSize = new System.Drawing.Size(431, 242);
+            this.ClientSize = new System.Drawing.Size(575, 298);
             this.Controls.Add(this.groupBox1);
             this.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "FormChoice";
             this.Text = "Choose JIRA queue";
             this.Load += new System.EventHandler(this.FormChoice_Load);
