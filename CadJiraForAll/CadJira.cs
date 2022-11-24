@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,8 +15,9 @@ namespace CadJiraForAll
     {
         public static string partnummer;
         public static string cadprogram;
-        public static string redm_or_gcs;
+        public static string weight;
 
+        public static string redm_or_gcs;
 
         //public string UserNameInSystem()
         //{
@@ -59,31 +61,14 @@ namespace CadJiraForAll
                 MessageBox.Show("Ticket created");
                 //Console.WriteLine(JsonConvert.DeserializeObject(restResponse.Content)); //DENNE MÅ VEKK PÅ ET TIDSPUNKT -  FINNE URL FRA DENNE.
             }
-            //MessageBox.Show(restResponse.Content.ToString() );  ///HVA BLIR FAKTISK SENDT.
-            //MessageBox.Show(restResponse.StatusCode.ToString());
-            //MessageBox.Show(restResponse.ErrorException.ToString());
-
         }
 
 
-        public void DeliverAttributes(string partnumber, string CadProgram) // string mfg="default"
+        public void DeliverAttributes(string partnumber, string CadProgram, string Weight) // string mfg="default"
         {
             partnummer = partnumber;
             cadprogram = CadProgram;
-            /*Felleskoden mottar data gjennom denne metoden.
-             Hentes fra AD.
-            Brukeren får et valg om REDM og GCS&ET via Windows Form.
-            Basert på dette valget =
-            Så opprettes det et JSON objekt med dataene fra CAD og AD.
-            Disse dataene som blir benyttet til å gjøre et API kall til JIRA.
-            Ta vare på respons fra API kallet som bruker til å åpne riktig URL.
-            Når kallet er gjort blir et åpnet en nettleser med ticketen som nå er opprettet.
-            */
-            //kort sagt: Samle data, ta valg, bruke dataene og presentere resultat.
-        }
-        public string FunkerDette() //ja det gjør det
-        {
-            return $"{partnummer} og {cadprogram}";
+            weight = Weight;
         }
 
         public static string RigEDMJson()
@@ -92,7 +77,7 @@ namespace CadJiraForAll
                 "\"serviceDeskId\": \"4822\"," +
                 "\"requestTypeId\": \"14610\"," +
                 "\"requestFieldValues\": {" +
-                "\"summary\": \" "+ partnummer +"\"," +
+                "\"summary\": \"  Partnumber/Name:"+ partnummer +" \"," +
                 "\"customfield_16671\": {\"value\": \"No Business Disruption - Workaround Available\"}," +
                 "\"customfield_16665\": {\"value\": \"Impacts Me or a Single Person\"}," +
                 "\"customfield_10040\": {\"value\": \"Norway\"}," +
@@ -101,7 +86,7 @@ namespace CadJiraForAll
                 //"\"customfield_14114\": {\"value\": \"Norway\"}," +
                 "\"customfield_15509\": {\"value\": \"No, update does not need Global ID\"}," +
                 //"\"customfield_14471\": {\"value\": \"Purchased\"}," +
-                "\"description\": \"This is a General description sent through JIRA API, Please Ignore this ticket.\"," +
+                "\"description\": \" Data Collected from: "+cadprogram.ToUpper()+"  ---  Listed weight(in Grams): "+weight+" \"," +
                 "\"customfield_14361\": {\"value\": \"No, Do Not Enable\"}," +
                 "\"customfield_13664\": 1" +
                 "}" +
@@ -121,24 +106,7 @@ namespace CadJiraForAll
 
         //static readonly HttpClient client = new HttpClient();
 
-        public static async Task NewTwoMain()
-        {
-            try
-            {
-                var client = new HttpClient();
-                HttpResponseMessage response = await client.GetAsync("https://jsonplaceholder.typicode.com/todos/66");
-                response.EnsureSuccessStatusCode();
-                
-                string responseBody = await response.Content.ReadAsStringAsync();
 
-                MessageBox.Show(responseBody);
-            }
-            catch (HttpRequestException e)
-            {
-                Console.WriteLine("\nException Caught!");
-                Console.WriteLine("Message :{0} ", e.Message);
-            }
-        }
         public static async Task RestTwoMain()
         {
             using (var client = new HttpClient { BaseAddress = new Uri("https://jira.nov.com/rest/") })
@@ -146,11 +114,15 @@ namespace CadJiraForAll
                 var authString = Convert.ToBase64String(Encoding.UTF8.GetBytes("risinggaardsortla:91323212Zenith"));
 
                 client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", authString);
-                //POST//var response = await client.PostAsync(requestUri, new StringContent());
-                var response = await client.GetAsync("servicedeskapi/servicedesk/4822/requesttype/14610/field");
+                var response = await client.PostAsync("servicedeskapi/request", new StringContent(RigEDMJson().ToString(), Encoding.UTF8, "application/json")); //LEGG TIL URI SOM I GET PLUSS JSON/STRINGEN DU VIL POSTE MED REQUESTEN. (https://jira.nov.com/rest/servicedeskapi/request + RigEDMJson() 
+                //var response = await client.GetAsync("servicedeskapi/servicedesk/4822/requesttype/14610/field");
 
                 string responseBody = await response.Content.ReadAsStringAsync();
                 MessageBox.Show(responseBody);
+                //Parses out the URL for the ticket on web:
+                var jObject = JObject.Parse(responseBody);
+                string stringurlfromJson = (string)jObject["_links"]["web"];
+                Process.Start(new ProcessStartInfo($"{stringurlfromJson}") { UseShellExecute = true });
             }
         }
     }
@@ -158,7 +130,7 @@ namespace CadJiraForAll
     {
         public async Task NewMain() //Denne kjører i CAD og tar seg av selve kjøringen.
         {
-            MessageBox.Show("HELLO FROM THE OTHER SIDE AGAIN 7");
+            //MessageBox.Show("HELLO FROM THE OTHER SIDE AGAIN 7");
             //CadJira felleskode = new CadJira();
             //felleskode.Formchoice();
 
@@ -168,12 +140,11 @@ namespace CadJiraForAll
             //await CadJira.API_Request(CadJira.redm_or_gcs);
 
             await CadJira.RestTwoMain();
+            //MessageBox.Show(CadJira.partnummer);
+            //MessageBox.Show(CadJira.cadprogram);
+            //MessageBox.Show(CadJira.weight);
 
-            //LAGE REQUEST I JIRADDIN??
-            //HVORDAN FÅ KJØRT DENNE HER...?
         }
     }
 }
 
-
-//Lage en HTTP request, men RestSharp er bar een wrapper da? mmmmm
