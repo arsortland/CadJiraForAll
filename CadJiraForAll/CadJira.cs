@@ -76,7 +76,7 @@ namespace CadJiraForAll
                 //"\"customfield_14114\": {\"value\": \"Norway\"}," +
                 "\"customfield_15509\": {\"value\": \"No, update does not need Global ID\"}," +
                 //"\"customfield_14471\": {\"value\": \"Purchased\"}," +
-                "\"description\": \" Data Collected from: " + cadprogram.ToUpper() + "  ---  Listed weight(in Grams): "+ weight +" ---Material "+material+"  --- Written by reporter: " + richtext + " \"," +
+                "\"description\": \" Data Collected from: " + cadprogram.ToUpper() + "  ---  Listed weight(in Grams): "+ weight +" ---Material: "+material+"  --- Written by reporter: " + richtext + " \"," +
                 "\"customfield_14361\": {\"value\": \"No, Do Not Enable\"}," +
                 "\"customfield_13664\": 1" +
                 "}" +
@@ -90,7 +90,7 @@ namespace CadJiraForAll
 
         public static string GCSJson()
         {
-            string json = "{ \"serviceDeskId\": \"11\",\"requestTypeId\": \"1112\", \"requestFieldValues\": { \"customfield_11869\": {\"value\": \"Other\"}, \"description\": \" Data Collected from: "+cadprogram.ToUpper()+"  ---  Listed weight(in Grams): "+weight+" --- Material: "+material+"  --- Written by reporter: "+richtext+" \"  } }";
+            string json = "{ \"serviceDeskId\": \"11\",\"requestTypeId\": \"1112\", \"requestFieldValues\": { \"customfield_11869\": {\"value\": \"Other\"}, \"description\": \" Data Collected from: "+cadprogram.ToUpper()+" ---PartNumber/Name: "+partnummer+"  ---  Listed weight(in Grams): "+weight+" --- Material: "+material+"  --- Written by reporter: "+richtext+" \"  } }";
             return json;
         }
 
@@ -117,7 +117,7 @@ namespace CadJiraForAll
                 client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", authString);
 
                     var response = await client.PostAsync("servicedeskapi/request", new StringContent(jsonstring, Encoding.UTF8, "application/json")); //LEGG TIL URI SOM I GET PLUSS JSON/STRINGEN DU VIL POSTE MED REQUESTEN. (https://jira.nov.com/rest/servicedeskapi/request + RigEDMJson() 
-                                                                                                                                                       //var response = await client.GetAsync("servicedeskapi/servicedesk/4822/requesttype/14610/field"); = GET metode
+                                                                                                                                                      //var response = await client.GetAsync("servicedeskapi/servicedesk/4822/requesttype/14610/field"); = GET metode
                 if (response.IsSuccessStatusCode)
                 {
                     string responseBody = await response.Content.ReadAsStringAsync();
@@ -132,13 +132,10 @@ namespace CadJiraForAll
                 }
                 else
                 {
-                    MessageBox.Show($"Oops! Something didn't work. :( -Did you use the right password?" +
+                    MessageBox.Show($"Oops! Something didn't work. :(" +
                         "\nError response: " + (int)response.StatusCode + " " + response.StatusCode);
                     //MessageBox.Show(response.StatusCode.ToString());
                 }
-
-
-
 
             }
         }
@@ -156,14 +153,15 @@ namespace CadJiraForAll
             {
                 CadJira.FormLogin();
             }
-
             CadJira.Formchoice();
             CadJira.FormInput();
+            //FormInpUt runs API_Request.
+
 
             //MessageBox.Show(CadJira.richtext);
             //MessageBox.Show(CadJira.redm_or_gcs);
 
-            await CadJira.API_Request(CadJira.redm_or_gcs);
+            //await CadJira.API_Request(CadJira.redm_or_gcs);
 
 
 

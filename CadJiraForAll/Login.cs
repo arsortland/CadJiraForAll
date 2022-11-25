@@ -37,5 +37,10 @@ namespace CadJiraForAll
         {
             this.Close();
         }
+
+        private void Login_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
