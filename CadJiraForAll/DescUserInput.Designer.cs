@@ -98,6 +98,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.richTextBox1);
             this.Name = "DescUserInput";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Description";
             this.ResumeLayout(false);
             this.PerformLayout();

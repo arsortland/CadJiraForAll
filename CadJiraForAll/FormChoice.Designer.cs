@@ -82,6 +82,7 @@
             this.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "FormChoice";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Choose JIRA queue";
             this.Load += new System.EventHandler(this.FormChoice_Load);
             this.groupBox1.ResumeLayout(false);
