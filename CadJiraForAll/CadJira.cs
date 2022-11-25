@@ -24,6 +24,8 @@ namespace CadJiraForAll
         public static string loginpw;
         public static string username = UserNameInSystem().ToString();
 
+        public static bool loggedIn = false;
+
         public static string UserNameInSystem()
         {
             string Name = new System.Security.Principal.WindowsPrincipal(System.Security.Principal.WindowsIdentity.GetCurrent()).Identity.Name;
@@ -126,6 +128,7 @@ namespace CadJiraForAll
                     var jObject = JObject.Parse(responseBody);
                     string stringurlfromJson = (string)jObject["_links"]["web"];
                     Process.Start(new ProcessStartInfo($"{stringurlfromJson}") { UseShellExecute = true });
+                    loggedIn = true;
                 }
                 else
                 {
@@ -149,8 +152,11 @@ namespace CadJiraForAll
             //felleskode.Formchoice();
 
             //CadJira.RigEDMJson();
+            if (CadJira.loggedIn == false)
+            {
+                CadJira.FormLogin();
+            }
 
-            CadJira.FormLogin();
             CadJira.Formchoice();
             CadJira.FormInput();
 
