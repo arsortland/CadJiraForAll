@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Net.WebRequestMethods;
 
 namespace CadJiraForAll
 {
@@ -44,6 +46,18 @@ namespace CadJiraForAll
         private void groupBox1_Enter(object sender, EventArgs e)
         {
 
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start(new ProcessStartInfo("https://wiki.nov.com/pages/viewpage.action?pageId=187802228") { UseShellExecute = true });
+            linkLabel1.LinkVisited = true;
+        }
+
+        private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start(new ProcessStartInfo("https://wiki.nov.com/pages/viewpage.action?pageId=157108563") { UseShellExecute = true });
+            linkLabel2.LinkVisited = true;
         }
     }
 }

@@ -4,11 +4,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using RestSharp;
-using RestSharp.Authenticators;
-using static System.Net.WebRequestMethods;
 
 namespace CadJiraForAll
 {
@@ -127,7 +123,7 @@ namespace CadJiraForAll
                     //Parses out the URL for the ticket on web:
                     var jObject = JObject.Parse(responseBody);
                     string stringurlfromJson = (string)jObject["_links"]["web"];
-                    Process.Start(new ProcessStartInfo($"{stringurlfromJson}") { UseShellExecute = true });
+                    Process.Start(new ProcessStartInfo($"{stringurlfromJson}") { UseShellExecute = true }); //Opens default browser with the link obtained from JSON.
                     loggedIn = true;
                 }
                 else
@@ -144,9 +140,6 @@ namespace CadJiraForAll
     {
         public async Task NewMain() //Denne kjører i CAD og tar seg av selve kjøringen.
         {
-            //MessageBox.Show("HELLO FROM THE OTHER SIDE AGAIN 7");
-            //CadJira felleskode = new CadJira();
-            //felleskode.Formchoice();
 
             //CadJira.RigEDMJson();
             if (CadJira.loggedIn == false)
@@ -156,22 +149,6 @@ namespace CadJiraForAll
             CadJira.Formchoice();
             CadJira.FormInput();
             //FormInpUt runs API_Request.
-
-
-            //MessageBox.Show(CadJira.richtext);
-            //MessageBox.Show(CadJira.redm_or_gcs);
-
-            //await CadJira.API_Request(CadJira.redm_or_gcs);
-
-
-
-
-
-            //await CadJira.API_Request(CadJira.redm_or_gcs);
-            //MessageBox.Show(CadJira.partnummer);
-            //MessageBox.Show(CadJira.cadprogram);
-            //MessageBox.Show(CadJira.loginpw);
-
         }
     }
 }
