@@ -149,7 +149,7 @@ namespace CadJiraForAll
     }
     public class RunAll
     {
-        public async Task NewMain() //Denne kjører i CAD og tar seg av selve kjøringen.
+        public void NewMain() //Denne kjører i CAD og tar seg av selve kjøringen.
         {
 
             //CadJira.RigEDMJson();
