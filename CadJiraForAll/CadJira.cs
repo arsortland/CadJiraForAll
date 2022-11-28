@@ -97,7 +97,7 @@ namespace CadJiraForAll
 
         public static string GCSJson()
         {
-            string json = "{ \"serviceDeskId\": \"11\",\"requestTypeId\": \"1112\", \"requestFieldValues\": { \"customfield_11869\": {\"value\": \"Other\"}, \"description\": \" Data Collected from: "+cadprogram+" ---PartNumber/Name: "+partnummer+"  ---  Listed weight: "+weight+" kg.--- Material: "+material+"  --- Written by reporter: "+richtext+" \"  } }";
+            string json = "{ \"serviceDeskId\": \"11\",\"requestTypeId\": \"1112\", \"requestFieldValues\": { \"customfield_11869\": {\"value\": \"Other\"}, \"description\": \" Data Collected from: "+cadprogram+" --- PartNumber/Name: "+partnummer+"  ---  Listed weight: "+weightInKilos+" kg. --- Material: "+material+"  --- Written by reporter: "+richtext+" \"  } }";
             return json;
         }
 
@@ -152,15 +152,15 @@ namespace CadJiraForAll
         public void NewMain() //Denne kjører i CAD og tar seg av selve kjøringen.
         {
 
-            //CadJira.RigEDMJson();
             if (CadJira.loggedIn == false)
             {
                 CadJira.FormLogin();
             }
 
             CadJira.Formchoice();
+            //FormInpUt runs the API_Request method.
             CadJira.FormInput();
-            //FormInpUt runs API_Request.
+            
         }
     }
 }
