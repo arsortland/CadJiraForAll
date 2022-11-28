@@ -13,6 +13,7 @@ namespace CadJiraForAll
         public static string partnummer;
         public static string cadprogram;
         public static string weight;
+        public static string weightInKilos;
         public static string material;
 
         public static string redm_or_gcs;
@@ -27,6 +28,15 @@ namespace CadJiraForAll
             string Name = new System.Security.Principal.WindowsPrincipal(System.Security.Principal.WindowsIdentity.GetCurrent()).Identity.Name;
             string parsedName = Name.Remove(0, 4);
             return parsedName;
+        }
+
+        public static string FromGramToKilos(string aWeight)
+        {
+            double weighInGrams = Convert.ToDouble(aWeight);
+            double weightinKilos = weighInGrams / 1000;
+            double weightInKilosRounded = Math.Round(weightinKilos, 3);
+            string weightinKiloString = weightInKilosRounded.ToString();
+            return weightinKiloString;
         }
 
 
@@ -72,7 +82,7 @@ namespace CadJiraForAll
                 //"\"customfield_14114\": {\"value\": \"Norway\"}," +
                 "\"customfield_15509\": {\"value\": \"No, update does not need Global ID\"}," +
                 //"\"customfield_14471\": {\"value\": \"Purchased\"}," +
-                "\"description\": \" Data Collected from: " + cadprogram.ToUpper() + "  ---  Listed weight(in Grams): "+ weight +" ---Material: "+material+"  --- Written by reporter: " + richtext + " \"," +
+                "\"description\": \" Data Collected from: " + cadprogram + "  ---  Listed weight: "+ weightInKilos+"kg. ---Material: "+material+"  --- Written by reporter: " + richtext + " \"," +
                 "\"customfield_14361\": {\"value\": \"No, Do Not Enable\"}," +
                 "\"customfield_13664\": 1" +
                 "}" +
@@ -86,7 +96,7 @@ namespace CadJiraForAll
 
         public static string GCSJson()
         {
-            string json = "{ \"serviceDeskId\": \"11\",\"requestTypeId\": \"1112\", \"requestFieldValues\": { \"customfield_11869\": {\"value\": \"Other\"}, \"description\": \" Data Collected from: "+cadprogram.ToUpper()+" ---PartNumber/Name: "+partnummer+"  ---  Listed weight(in Grams): "+weight+" --- Material: "+material+"  --- Written by reporter: "+richtext+" \"  } }";
+            string json = "{ \"serviceDeskId\": \"11\",\"requestTypeId\": \"1112\", \"requestFieldValues\": { \"customfield_11869\": {\"value\": \"Other\"}, \"description\": \" Data Collected from: "+cadprogram+" ---PartNumber/Name: "+partnummer+"  ---  Listed weight: "+weight+" kg.--- Material: "+material+"  --- Written by reporter: "+richtext+" \"  } }";
             return json;
         }
 
@@ -146,6 +156,7 @@ namespace CadJiraForAll
             {
                 CadJira.FormLogin();
             }
+            CadJira.weightInKilos = CadJira.FromGramToKilos(CadJira.weight); //Converts value from CAD to kg.
             CadJira.Formchoice();
             CadJira.FormInput();
             //FormInpUt runs API_Request.
