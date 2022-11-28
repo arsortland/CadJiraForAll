@@ -123,7 +123,7 @@ namespace CadJiraForAll
 
                 client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", authString);
 
-                    var response = await client.PostAsync("servicedeskapi/request", new StringContent(jsonstring, Encoding.UTF8, "application/json")); //LEGG TIL URI SOM I GET PLUSS JSON/STRINGEN DU VIL POSTE MED REQUESTEN. (https://jira.nov.com/rest/servicedeskapi/request + RigEDMJson() 
+                    var response = await client.PostAsync("servicedeskapi/request", new StringContent(jsonstring, Encoding.UTF8, "application/json"));
                                                                                                                                                       //var response = await client.GetAsync("servicedeskapi/servicedesk/4822/requesttype/14610/field"); = GET metode
                 if (response.IsSuccessStatusCode)
                 {
