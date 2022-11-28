@@ -65,6 +65,7 @@ namespace CadJiraForAll
             cadprogram = CadProgram;
             weight = Weight;
             material = Material;
+            weightInKilos = FromGramToKilos(weight);
         }
 
         public static string RigEDMJson()
@@ -156,7 +157,7 @@ namespace CadJiraForAll
             {
                 CadJira.FormLogin();
             }
-            CadJira.weightInKilos = CadJira.FromGramToKilos(CadJira.weight); //Converts value from CAD to kg.
+
             CadJira.Formchoice();
             CadJira.FormInput();
             //FormInpUt runs API_Request.
