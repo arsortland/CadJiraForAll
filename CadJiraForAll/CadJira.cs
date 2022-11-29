@@ -139,7 +139,7 @@ namespace CadJiraForAll
                 }
                 else
                 {
-                    MessageBox.Show($"Oops! Something didn't work. :(" +
+                    MessageBox.Show("Oops! Something didn't work. :(" +
                         "\nError response: " + (int)response.StatusCode + " " + response.StatusCode);
                     //MessageBox.Show(response.StatusCode.ToString());
                 }
@@ -152,7 +152,7 @@ namespace CadJiraForAll
         public void NewMain() //Denne kjører i CAD og tar seg av selve kjøringen.
         {
 
-            if (CadJira.loggedIn == false)
+            if (!CadJira.loggedIn)
             {
                 CadJira.FormLogin();
             }
